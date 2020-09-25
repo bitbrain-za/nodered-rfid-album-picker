@@ -1,0 +1,90 @@
+<script type="text/javascript">
+    RED.nodes.registerType('album-picker',
+    {
+        category: 'IoT',
+        color: '#32a840',
+        defaults: 
+        {
+            name: {value:""},
+            broker: { value: "", type: "mqtt-broker", required: !0 },
+            qos: {value: '0'},
+            topic: {value: '', required: true, validate: RED.validators.regex(/^(#$|(\+|[^+#]*)(\/(\+|[^+#]*))*(\/(\+|#|[^+#]*))?$)/)},
+            path: {value:"", required:true},
+        },
+        inputs:0,
+        outputs:1,
+        icon: "font-awesome/fa-music",
+        paletteLabel: "album picker",
+        label: function() 
+        {
+            return this.name||"album-picker";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="album-picker">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i>Name</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-broker"><i class="fa fa-path"></i>Broker</label>
+        <input type="text" id="node-input-broker">
+    </div>
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i>Topic</label>
+        <input type="text" id="node-input-topic">
+    </div>
+    <div class="form-row">
+        <label for="node-input-qos"><i class="fa fa-empire"></i>QoS</label>
+        <select id="node-input-qos" style="width:125px !important">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-path"><i class="fa fa-file-code-o"></i>Path</label>
+        <input type="text" id="node-input-path">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="album-picker">
+<p>Connects to a MQTT broker and subscribes to messages from the specified topic.</p>
+    <h3>Album Picker</h3>
+    <p>Reads in a JSON file containing an array of tags and associated uri's. 
+        Listens for a tag on the supplied MQTT broker and topic.
+        Returns the URI and type.</p>
+
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+       <dt>data.media_content_type <span class="property-type">string </span></dt>
+       <dd>Whatever is stored int the file under "type"</dd>
+       <dt>data.media_content_id <span class="property-type">string </span></dt>
+       <dd>Whatever is stored int the file under "uri"</dd>
+    </dl>
+    <h3>File Formar</h3>
+    <p>
+        <pre>
+            <code>
+{
+    "Tags":
+    [
+        {"tag":"0010154676",  "type":"playlist",  "uri": "spotify:album:7xl50xr9NDkd3i2kBbzsNZ", "name": "Stadium Arcadium"},
+        {"tag":"0002697902",  "type":"playlist",  "uri": "spotify:album:3zNi5dCpkbm4zv7h1vGOMy", "name": "Djesse vol2"},
+        {"tag":"0002087965",  "type":"playlist",  "uri": "spotify:album:7acEciVtnuTzmwKptkjth5", "name": "Fear Inoculum"},
+        {"tag":"0002113195",  "type":"playlist",  "uri": "spotify:album:5bbb7E51zaDCuD85uLyFkK", "name": "Rain Dogs" },
+        {"tag":"0002133636",  "type":"playlist",  "uri": "spotify:album:3rGvtZqjmB08fbjEqZl0Ui", "name":"Beethoven"},
+        {"tag":"0002530785",  "type":"playlist",  "uri": "spotify:album:7MPJRyMFbWbgezRP2Pj4TZ", "name":"Empath"}
+    ]
+}
+            </code>
+        </pre>
+    </p>
+    <h3>Details</h3>
+    The subscription topic can include MQTT wildcards, + for one level, # for multiple levels.</p>
+    <p>This node requires a connection to a MQTT broker to be configured. This is configured by clicking
+    the pencil icon.</p>
+    <p>Several MQTT nodes (in or out) can share the same broker connection if required.</p>
+
+</script>
