@@ -20,6 +20,7 @@
     "mqtt": "^4.2.1",
     "is-utf8": "^0.2.1"
   },
+  "keywords": [ "node-red" ],
   "node-red" : 
   {
     "nodes": 
